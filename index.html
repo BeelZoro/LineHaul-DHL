@@ -227,13 +227,6 @@
 async function carregarDados(){
 
     try{
-
-const workbook =
-XLSX.read(
-    arrayBuffer,
-    { type:"array" }
-);
-console.log(workbook.SheetNames);
         
         const resposta =
         await fetch("DIARIO.xlsx");
