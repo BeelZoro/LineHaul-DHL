@@ -105,9 +105,9 @@
 
     </style>
 
+    <script src="xlsx.full.min.js"></script>
+    
 </head>
-
-<script src="xlsx.full.min.js"></script>
     
 <body>
 
@@ -227,7 +227,7 @@
 async function carregarDados(){
 
     try{
-        
+
         const resposta =
         await fetch("DIARIO.xlsx");
 
@@ -240,21 +240,47 @@ async function carregarDados(){
             { type:"array" }
         );
 
+        console.log(
+            "ABAS:",
+            workbook.SheetNames
+        );
+
         const aba =
         workbook.Sheets["REPORT"];
 
         const viagens =
         XLSX.utils.sheet_to_json(aba);
 
-        renderizarDashboard(viagens);
+        console.log(
+            "TOTAL:",
+            viagens.length
+        );
+
+        console.log(
+            "PRIMEIRO:",
+            viagens[0]
+        );
+
+        if(viagens.length > 0){
+
+            console.log(
+                "COLUNAS:",
+                Object.keys(
+                    viagens[0]
+                )
+            );
+
+        }
+
+        renderizarDashboard(
+            viagens
+        );
 
     }
 
     catch(erro){
 
         console.error(erro);
-
-        alert("Erro ao carregar DIARIO.xlsx");
 
     }
 
@@ -305,7 +331,7 @@ async function enviarParaGitHub() {
 
     const getFile =
     await fetch(
-        "https://api.github.com/repos/BeelZoro/LineHaul-SPG-DHL/contents/DIARIO.xlsx?ref=main",
+        "https://api.github.com/repos/BeelZoro/LineHaul-SPG-DHL/contents/LINEHAUL.xlsx?ref=main",
         {
             headers:{
                 Authorization:
@@ -325,7 +351,7 @@ async function enviarParaGitHub() {
 
     const upload =
     await fetch(
-        "https://api.github.com/repos/BeelZoro/LineHaul-SPG-DHL/contents/DIARIO.xlsx",
+        "https://api.github.com/repos/BeelZoro/LineHaul-SPG-DHL/contents/LINEHAUL.xlsx",
         {
             method:"PUT",
 
@@ -508,17 +534,13 @@ function calcularDelta(
 
     if(minutos > 0){
 
-        return
-        "+" + minutos +
-        " min (ATRASADO)";
+    return "+" + minutos + " min (ATRASADO)";
 
     }
 
-    return
-    minutos +
-    " min (DENTRO DO OC)";
+    return minutos + " min (DENTRO DO OC)";
 
-}
+    }
     
 carregarDados();
     
