@@ -229,7 +229,7 @@ async function carregarDados(){
     try{
 
         const resposta =
-        await fetch("DIARIO.xlsx");
+        await fetch("LINEHAUL.xlsx");
 
         const arrayBuffer =
         await resposta.arrayBuffer();
@@ -250,38 +250,62 @@ async function carregarDados(){
 
         const linhas =
         XLSX.utils.sheet_to_json(
-        aba,
-        {
-        header:1
-        }
-    );
-        
-console.log(linhas[0]);
-console.log(linhas[1]);
-console.log(linhas[2]);
-        
-       const cabecalho = linhas[0];
+            aba,
+            {
+                header:1
+            }
+        );
 
-const viagens = linhas
-.slice(1)
-.filter(l => l.length > 0)
-.map(l => ({
+        console.log("LINHA 0", linhas[0]);
+        console.log("LINHA 1", linhas[1]);
+        console.log("LINHA 2", linhas[2]);
+        console.log("LINHA 3", linhas[3]);
 
-    DATA: l[0],
-    CLIENTE: l[1],
-    STATUS: l[2],
-    VIAGEM: l[3],
-    LINHA: l[4],
-    PLACA_CARRETA: l[5],
-    NOTAS: l[6],
-    VOLUMES: l[7],
-    PRAZOS: l[8],
-    OPS_CLOCK: l[9],
-    CHEGADA_REAL: l[10],
-    LEAD_TIME: l[11],
-    OBS: l[12]
+        const viagens =
+        linhas
+        .slice(1)
+        .filter(l => l.length > 0)
+        .map(l => ({
 
-}));
+            DATA: l[0],
+            CLIENTE: l[1],
+            STATUS: l[2],
+            VIAGEM: l[3],
+            LINHA: l[4],
+            PLACA_CARRETA: l[5],
+            NOTAS: l[6],
+            VOLUMES: l[7],
+            PRAZOS: l[8],
+            OPS_CLOCK: l[9],
+            CHEGADA_REAL: l[10],
+            LEAD_TIME: l[11],
+            OBS: l[12]
+
+        }));
+
+        console.log(
+            "TOTAL:",
+            viagens.length
+        );
+
+        console.log(
+            "PRIMEIRO:",
+            viagens[0]
+        );
+
+        renderizarDashboard(
+            viagens
+        );
+
+    }
+
+    catch(erro){
+
+        console.error(erro);
+
+    }
+
+}
 
 async function enviarParaGitHub() {
 
